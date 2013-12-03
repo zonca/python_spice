@@ -1,6 +1,7 @@
 import numpy as np
 import pyfits
 import subprocess
+import sys
 import pandas as pd
 import os
 import json
@@ -137,7 +138,12 @@ def spice(bin=True, norm=True, **kwargs):
     for f in glob("spiceTEMP*"):
         os.remove(f)
     write_params(params)
-    subprocess.call(["spice", "-optinfile", "./spiceTEMP_spice_params.txt"])
+    try:
+        subprocess.check_output(["spice", "-optinfile", "./spiceTEMP_spice_params.txt"], stderr=subprocess.STDOUT)
+    except subprocess.CalledProcessError as e:
+        print("Error in spice")
+        print(e.output)
+        sys.exit(1)
     cl = read_cl()
     for f in glob("spiceTEMP*"):
         os.remove(f)
