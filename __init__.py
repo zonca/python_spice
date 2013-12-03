@@ -135,8 +135,6 @@ def spice(bin=True, norm=True, **kwargs):
                 kwargs[key] = temp_map_file
 
     params.update(kwargs)
-    for f in glob("spiceTEMP*"):
-        os.remove(f)
     write_params(params)
     try:
         subprocess.check_output(["spice", "-optinfile", "./spiceTEMP_spice_params.txt"], stderr=subprocess.STDOUT)
